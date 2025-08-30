@@ -11,8 +11,8 @@ class Setting(models.Model):
     instagram = models.CharField(max_length=100)
     twitter = models.CharField(max_length=100, blank=True, null=True)
     pinterest = models.CharField(max_length=100, blank=True, null=True)
-    newsletter = models.CharField(max_length=100)
-    newsletter_description = models.TextField()
+    newsletter = models.CharField(max_length=100, blank=True, null=True)
+    newsletter_description = models.TextField(max_length=500, blank=True, null=True)
 
     def __str__(self):
         return 'Setting'

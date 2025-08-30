@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 from django.utils.translation import gettext_lazy as _
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -44,6 +45,11 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'products',
+    'Home',
+    'contact',
+    'core',
+    'about',
+
 ]
 
 MIDDLEWARE = [
@@ -62,7 +68,7 @@ ROOT_URLCONF = 'eurotechbattery.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "Templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
