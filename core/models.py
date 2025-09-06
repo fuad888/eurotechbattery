@@ -1,14 +1,16 @@
 from django.db import models
 
 class Setting(models.Model):
-    logo = models.ImageField(upload_to='logo/')
+    logo = models.ImageField(upload_to='logo/',blank=True, null=True)
     title = models.CharField(max_length=100, blank=True, null=True)
-    email = models.EmailField()
-    phone = models.CharField(max_length=20)
-    postal_code = models.CharField(max_length=10)
-    address = models.TextField()
-    facebook = models.CharField(max_length=100)
-    instagram = models.CharField(max_length=100)
+    email = models.EmailField(blank=True, null=True)
+    phone = models.CharField(max_length=20, blank=True, null=True)
+    mobile = models.CharField(max_length=20, blank=True, null=True)
+    postal_code = models.CharField(max_length=10, blank=True, null=True)
+    address1 = models.TextField(blank=True, null=True)
+    address2 = models.TextField(blank=True, null=True)
+    facebook = models.CharField(max_length=100, blank=True, null=True)
+    instagram = models.CharField(max_length=100, blank=True, null=True)
     twitter = models.CharField(max_length=100, blank=True, null=True)
     pinterest = models.CharField(max_length=100, blank=True, null=True)
     newsletter = models.CharField(max_length=100, blank=True, null=True)

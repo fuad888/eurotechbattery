@@ -20,6 +20,7 @@ from django.conf.urls.i18n import i18n_patterns
 
 urlpatterns = [
     path('rosetta/', include('rosetta.urls')),
+    path("captcha/", include("captcha.urls")),
 ]
 
 urlpatterns += i18n_patterns(
@@ -27,5 +28,6 @@ urlpatterns += i18n_patterns(
     path('i18n/', include('django.conf.urls.i18n')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('', include('Home.urls')),
+    path('contact/', include('contact.urls')),
 
 )

@@ -1,8 +1,7 @@
-from .models import Setting
+from core.models import Setting
 
-def setting_context(request):
-    setting = Setting.objects.first()
-    
+def global_settings(request):
+    setting_obj = Setting.objects.first()
     return {
-        'setting_obj': setting,
+        "setting_obj": setting_obj
     }

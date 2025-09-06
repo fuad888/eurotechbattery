@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% load i18n %}
+
+<div class="container contact-section">
+    <div class="text-center mb-5">
+        <h6 class="text-uppercase">Michelle Pais Group</h6>
+        <h1 class="fw-bold">Contact Us</h1>
+    </div>
+
+    <div class="row">
+        <!-- Left Column: Form -->
+        <div class="col-md-6">
+            <div class="contact-form-container-form">
+                <h2>Contact Form</h2>
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-success">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+
+                <form method="post" action="{% url 'contact' %}">
+                    {% csrf_token %}
+                    {{ form.non_field_errors }}
+                    <div class="mb-3">
+                        {{ form.name.label_tag }}
+                        {{ form.name }}
+                        {{ form.name.errors }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.email.label_tag }}
+                        {{ form.email }}
+                        {{ form.email.errors }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.phone.label_tag }}
+                        {{ form.phone }}
+                        {{ form.phone.errors }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.interest.label_tag }}
+                        {{ form.interest }}
+                        {{ form.interest.errors }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.message.label_tag }}
+                        {{ form.message }}
+                        {{ form.message.errors }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.captcha.label_tag }}
+                        {{ form.captcha }}
+                        {{ form.captcha.errors }}
+                    </div>
+                    <button type="submit" class="btn btn-outline-primary" id="submitBtn" disabled>Submit</button>
+
+                </form>
+            </div>
+        </div>
+
+        <!-- Right Column: Contact Info -->
+        <div class="col-md-6 d-flex align-items-center justify-content-center">
+            <div class="contact-info text-end">
+                <h5 class="mb-3">{% trans "Contact Details" %}</h5>
+                <p>
+                    <a href="mailto:michelle@signaturerealtynj.com">michelle@signaturerealtynj.com</a><br>
+                    (908) 686-1200
+                </p>
+
+                <h6 class="fw-bold">{% trans "Manufactory" %}</h6>
+                <p>{{ setting_obj.address1 }}</p>
+
+                <h6 class="fw-bold">{% trans "Head office" %}</h6>
+                <p>{{ setting_obj.address2 }}</p> 
+
+                <h6 class="fw-bold">{% trans " Phone" %}</h6>
+                <p><a href="tel:{{ setting_obj.phone }}" class="text-light text-decoration-none"><i class="fa fa-phone me-2 text-danger"></i>{{ setting_obj.phone }}</a>
+                    <br><a href="tel:{{ setting_obj.mobile }}" class="text-light text-decoration-none"><i class="fa fa-phone me-2 text-danger"></i>{{ setting_obj.mobile }}</a></p>
+
+                <div class="social-icons mt-4">
+                    <a href="#"><i class="bi bi-facebook"></i></a>
+                    <a href="#"><i class="bi bi-instagram"></i></a>
+                    <a href="#"><i class="bi bi-youtube"></i></a>
+                    <a href="#"><i class="bi bi-house"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br><br>
+
+<script>
+    const form = document.querySelector('form');
+    const submitBtn = document.getElementById('submitBtn');
+    
+    form.addEventListener('input', () => {
+        // form sahələrinin hamısının dolu olub olmadığını yoxlayırıq
+        let allFilled = true;
+        form.querySelectorAll('input, select, textarea').forEach(field => {
+            if (!field.value) allFilled = false;
+        });
+    
+        if (allFilled) {
+            submitBtn.classList.remove('btn-outline-primary'); // açıq görünüş
+            submitBtn.classList.add('btn-primary');           // tünd göy görünüş
+            submitBtn.disabled = false;                       // aktiv et
+        } else {
+            submitBtn.classList.remove('btn-primary');
+            submitBtn.classList.add('btn-outline-primary');
+            submitBtn.disabled = true;
+        }
+    });
+    </script>
+    
+{% endblock %}
