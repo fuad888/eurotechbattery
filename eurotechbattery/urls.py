@@ -29,5 +29,6 @@ urlpatterns += i18n_patterns(
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('', include('Home.urls')),
     path('contact/', include('contact.urls')),
+    path('about/', include('about.urls')),
 
 )
