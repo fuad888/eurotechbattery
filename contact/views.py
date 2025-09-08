@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import ContactForm
+from .models import  FAQ
 
 def contact(request):
     if request.method == 'POST':
@@ -14,5 +15,13 @@ def contact(request):
     else:
         form = ContactForm()
 
-    context = {'form': form}  # context burada yaradılır
+    context = {
+        'form': form,
+        'faqs': FAQ.objects.all()  # istəsən FAQ-ları da buradan göndərə bilərsən
+    }
     return render(request, 'contact.html', context)
+
+
+def faq(request):
+    faqs = FAQ.objects.all()
+    return render(request, 'faq.html', {'faqs': faqs})

@@ -8,7 +8,7 @@
         <h6 class="text-uppercase">Michelle Pais Group</h6>
         <h1 class="fw-bold">Contact Us</h1>
     </div>
-
+    
     <div class="row">
         <!-- Left Column: Form -->
         <div class="col-md-6">
@@ -88,6 +88,24 @@
             </div>
         </div>
     </div>
+    <div class="mt-5">
+            <section class="py-3 bg-light border-bottom">
+                <div class="container">
+                  <div class="row align-items-center">
+                    <!-- Sol tərəf: Yazı -->
+                    <div class="col-md-8">
+                      <h3 class="mb-0">{% trans "Frequently Asked Questions" %}</h3>
+                    </div>
+                    <!-- Sağ tərəf: Button -->
+                    <div class="col-md-4 text-md-end text-center mt-3 mt-md-0">
+                      <a href="{% url 'faq' %}" class="btn btn-primary px-4">
+                        {% trans "View FAQ" %}
+                      </a>
+                    </div>
+                  </div>
+                </div>
+            </section>
+    </div>
 </div>
 
 <br><br>
@@ -113,6 +131,6 @@
             submitBtn.disabled = true;
         }
     });
-    </script>
+</script>
     
 {% endblock %}
