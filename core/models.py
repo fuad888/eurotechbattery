@@ -11,8 +11,6 @@ class Setting(models.Model):
     address2 = models.TextField(blank=True, null=True)
     facebook = models.CharField(max_length=100, blank=True, null=True)
     instagram = models.CharField(max_length=100, blank=True, null=True)
-    twitter = models.CharField(max_length=100, blank=True, null=True)
-    pinterest = models.CharField(max_length=100, blank=True, null=True)
     newsletter = models.CharField(max_length=100, blank=True, null=True)
     newsletter_description = models.TextField(max_length=500, blank=True, null=True)
 

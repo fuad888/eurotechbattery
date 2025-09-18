@@ -3,17 +3,17 @@
 {% block content %}
 {% load i18n %}
 
-<div class="container contact-section">
-    <div class="text-center mb-5">
-        <h6 class="text-uppercase">Michelle Pais Group</h6>
-        <h1 class="fw-bold">Contact Us</h1>
+<div class="container contact-section animate__animated animate__fadeIn">
+    <div class="text-center mb-5" style="margin-top: 25px;">
+        <h6 class="text-uppercase">{{ setting_obj.title }}</h6>
+        <h1 class="fw-bold">{% trans "Contact Us" %}</h1>
     </div>
     
     <div class="row">
         <!-- Left Column: Form -->
         <div class="col-md-6">
-            <div class="contact-form-container-form">
-                <h2>Contact Form</h2>
+            <div class="contact-form-container-form p-4 shadow rounded bg-white text-dark">
+                <h2 class="text-center mb-4">{% trans "Contact Form" %}</h2>
 
                 {% if messages %}
                     {% for message in messages %}
@@ -54,77 +54,109 @@
                         {{ form.captcha }}
                         {{ form.captcha.errors }}
                     </div>
-                    <button type="submit" class="btn btn-outline-primary" id="submitBtn" disabled>Submit</button>
-
+                    <button type="submit" class="btn btn-outline-primary w-100 py-2 fw-bold" id="submitBtn" disabled>
+                        {% trans "Submit" %}
+                    </button>
                 </form>
             </div>
         </div>
 
-        <!-- Right Column: Contact Info -->
-        <div class="col-md-6 d-flex align-items-center justify-content-center">
-            <div class="contact-info text-end">
-                <h5 class="mb-3">{% trans "Contact Details" %}</h5>
-                <p>
-                    <a href="mailto:michelle@signaturerealtynj.com">michelle@signaturerealtynj.com</a><br>
-                    (908) 686-1200
-                </p>
+<!-- Right Column: Contact Info -->
+<div class="col-md-6 d-flex align-items-center justify-content-center">
+    <div class="contact-info text-center animate__animated animate__fadeInRight text-dark">
+        <h5 class="mb-3 text-dark">{% trans "Contact Details" %}</h5>
+        <p>
+            <a href="mailto:{{ setting_obj.email }}" class="text-dark">{{ setting_obj.email }}</a>
+        </p>
 
-                <h6 class="fw-bold">{% trans "Manufactory" %}</h6>
-                <p>{{ setting_obj.address1 }}</p>
+        <h6 class="fw-bold text-dark">{% trans "Manufactory" %}</h6>
+        <p class="text-dark">{{ setting_obj.address1 }}</p>
 
-                <h6 class="fw-bold">{% trans "Head office" %}</h6>
-                <p>{{ setting_obj.address2 }}</p> 
+        <h6 class="fw-bold text-dark">{% trans "Head office" %}</h6>
+        <p class="text-dark">{{ setting_obj.address2 }}</p> 
 
-                <h6 class="fw-bold">{% trans " Phone" %}</h6>
-                <p><a href="tel:{{ setting_obj.phone }}" class="text-light text-decoration-none"><i class="fa fa-phone me-2 text-danger"></i>{{ setting_obj.phone }}</a>
-                    <br><a href="tel:{{ setting_obj.mobile }}" class="text-light text-decoration-none"><i class="fa fa-phone me-2 text-danger"></i>{{ setting_obj.mobile }}</a></p>
-
-                <div class="social-icons mt-4">
-                    <a href="#"><i class="bi bi-facebook"></i></a>
-                    <a href="#"><i class="bi bi-instagram"></i></a>
-                    <a href="#"><i class="bi bi-youtube"></i></a>
-                    <a href="#"><i class="bi bi-house"></i></a>
-                </div>
-            </div>
-        </div>
+        <h6 class="fw-bold text-dark">{% trans "Phone" %}</h6>
+        <p>
+            <a href="tel:{{ setting_obj.phone }}" class="text-dark text-decoration-none">
+                <i class="fa fa-phone me-2 text-danger"></i>{{ setting_obj.phone }}
+            </a><br>
+            <a href="tel:{{ setting_obj.mobile }}" class="text-dark text-decoration-none">
+                <i class="fa fa-phone me-2 text-danger"></i>{{ setting_obj.mobile }}
+            </a>
+        </p>
     </div>
-    <div class="mt-5">
-            <section class="py-3 bg-light border-bottom">
-                <div class="container">
-                  <div class="row align-items-center">
-                    <!-- Sol tərəf: Yazı -->
-                    <div class="col-md-8">
-                      <h3 class="mb-0">{% trans "Frequently Asked Questions" %}</h3>
-                    </div>
-                    <!-- Sağ tərəf: Button -->
-                    <div class="col-md-4 text-md-end text-center mt-3 mt-md-0">
-                      <a href="{% url 'faq' %}" class="btn btn-primary px-4">
-                        {% trans "View FAQ" %}
-                      </a>
-                    </div>
-                  </div>
-                </div>
-            </section>
+</div>
     </div>
 </div>
 
+<!-- FAQ section -->
+<!-- FAQ section -->
+<div class="mt-5 animate__animated animate__fadeInUp">
+    <section class="py-3 bg-light border-bottom">
+        <div class="container">
+            <div class="row align-items-center">
+                <!-- Sol tərəf: Yazı -->
+                <div class="col-md-8">
+                    <h3 class="mb-0 text-dark">{% trans "Frequently Asked Questions" %}</h3>
+                </div>
+                <!-- Sağ tərəf: Button -->
+                <div class="col-md-4 text-md-end text-center mt-3 mt-md-0">
+                    <a href="{% url 'faq' %}" class="btn btn-primary px-4 hover-zoom">
+                        {% trans "View FAQ" %}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
 <br><br>
+
+<!-- Custom Styles -->
+<style>
+    .contact-form-container-form input, 
+    .contact-form-container-form select,
+    .contact-form-container-form textarea {
+        border: 1px solid #ccc;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .contact-form-container-form input:focus,
+    .contact-form-container-form select:focus,
+    .contact-form-container-form textarea:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 10px rgba(0,123,255,0.4);
+    }
+
+    .btn:hover {
+        transform: scale(1.05);
+        transition: 0.3s ease;
+    }
+
+    .hover-zoom:hover {
+        transform: scale(1.08);
+        background: #0056b3 !important;
+    }
+</style>
+
+<!-- Animate.css CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
 <script>
     const form = document.querySelector('form');
     const submitBtn = document.getElementById('submitBtn');
     
     form.addEventListener('input', () => {
-        // form sahələrinin hamısının dolu olub olmadığını yoxlayırıq
         let allFilled = true;
         form.querySelectorAll('input, select, textarea').forEach(field => {
             if (!field.value) allFilled = false;
         });
     
         if (allFilled) {
-            submitBtn.classList.remove('btn-outline-primary'); // açıq görünüş
-            submitBtn.classList.add('btn-primary');           // tünd göy görünüş
-            submitBtn.disabled = false;                       // aktiv et
+            submitBtn.classList.remove('btn-outline-primary'); 
+            submitBtn.classList.add('btn-primary');           
+            submitBtn.disabled = false;                       
         } else {
             submitBtn.classList.remove('btn-primary');
             submitBtn.classList.add('btn-outline-primary');

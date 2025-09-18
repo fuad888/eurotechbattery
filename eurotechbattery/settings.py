@@ -129,15 +129,17 @@ USE_I18N = True
 USE_TZ = True
 
 import os
-STATIC_URL = 'static/'
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
-# mediani heleki kommente ala bilersiniz
+STATIC_URL = '/static/'  # sonuna / əlavə olundu
+
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+
+# media hələlik şərh olaraq saxlanır
 CKEDITOR_UPLOAD_PATH = 'uploads/'
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
 
 LANGUAGE_CODE = 'az'
 
