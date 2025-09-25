@@ -15,17 +15,35 @@
   </div>
 
   <!-- Content -->
-  <div class="container position-relative" style="z-index: 1;" data-aos="fade-up" data-aos-duration="1000">
-    {% if random_product %}
-      <h1 class="display-4 fw-bold mb-3 animate__animated animate__fadeInDown">
-        {{ random_product.name }} <br>
-        <span class="fw-bold text-warning">{{ random_product.category.name }}</span>
-      </h1>
-      <a href="{% url 'products' %}" class="btn btn-outline-light btn-lg mt-3 shadow animate__animated animate__pulse animate__infinite">
-        ALL Products
-      </a>
-    {% endif %}
-  </div>
+  <section class="py-5 position-relative" data-aos="fade-up" data-aos-duration="1000">
+    <div class="container">
+      {% if random_product %}
+      <div class="row align-items-center">
+        
+        <!-- Mətn solda -->
+        <div class="col-md-6">
+          <h1 class="display-4 fw-bold mb-3 animate__animated animate__fadeInDown" style="line-height: 1.2; font-size: 2.8rem;">
+            {{ random_product.name }} <br>
+            <span class="fw-bold text-warning">{{ random_product.category.name }}</span>
+          </h1>
+          <a href="{% url 'products' %}" class="btn btn-outline-light btn-lg mt-3 shadow animate__animated animate__pulse animate__infinite">
+            ALL Products
+          </a>
+        </div>
+        
+        <!-- Şəkil sağda -->
+        <div class="col-md-6 text-center">
+          {% if random_product.image %}
+          <img src="{{ random_product.image.url }}" alt="{{ random_product.name }}" class="img-fluid animate__animated animate__fadeInRight">
+          {% endif %}
+        </div>
+  
+      </div>
+      {% endif %}
+    </div>
+  </section>
+
+  
   
 </section>
 
@@ -33,13 +51,14 @@
 <!-- Category Section -->
 <section class="py-5 bg-light">
   <div class="container">
-    <h2 class="text-center mb-5 fw-bold" data-aos="zoom-in">Category</h2>
+    <h2 class="text-center mb-5 fw-bold" data-aos="zoom-in" style="color: black;">{% trans 'Category' %}</h2>
     <div class="row g-4">
-      {% for i in "1234" %}
+      {% for i in categories %}
       <div class="col-md-3 col-6" data-aos="flip-left" data-aos-delay="{{ forloop.counter0 }}00">
         <div class="card border-0 shadow-sm h-100 hover-shadow transition">
-          <img src="https://via.placeholder.com/300x200.png?text=Category+{{ forloop.counter }}" 
+          <img src="{{ i.image.url }}" 
                class="card-img-top rounded-top" alt="Category {{ forloop.counter }}">
+          <option value="{{ cat.slug }}" {% if request.GET.category == cat.slug %}selected{% endif %}>
         </div>
       </div>
       {% endfor %}
@@ -52,8 +71,8 @@
 <section class="py-5 bg-white position-relative overflow-hidden">
   <div class="container text-center">
     <div class="mb-4">
-      <h2 class="fw-bold d-inline-block position-relative" data-aos="fade-down">
-        Latest Products
+      <h2 class="fw-bold d-inline-block position-relative" data-aos="fade-down" style="color: black;">
+        {% trans 'Latest Products' %}
         <span class="d-block mx-auto mt-2" style="width: 50px; height: 3px; background: #007bff; border-radius: 2px;"></span>
       </h2>
     </div>
@@ -61,15 +80,11 @@
     <!-- Product Carousel -->
     <div id="productCarousel" class="carousel slide mx-auto shadow-lg" data-bs-ride="carousel" style="max-width: 700px; border-radius: 12px; overflow: hidden;" data-aos="zoom-in">
       <div class="carousel-inner">
-        <div class="carousel-item active">
-          <img src="https://via.placeholder.com/700x300.png?text=Product+1" class="d-block w-100" alt="Product 1">
+        {% for product in latest_products %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+          <img src="{{ product.image.url }}" class="d-block w-100" alt="{{ product.name }}">
         </div>
-        <div class="carousel-item">
-          <img src="https://via.placeholder.com/700x300.png?text=Product+2" class="d-block w-100" alt="Product 2">
-        </div>
-        <div class="carousel-item">
-          <img src="https://via.placeholder.com/700x300.png?text=Product+3" class="d-block w-100" alt="Product 3">
-        </div>
+        {% endfor %}
       </div>
       <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
         <span class="carousel-control-prev-icon bg-dark rounded-circle p-2"></span>
@@ -81,14 +96,14 @@
   </div>
 
   <!-- Sol Yük Maşını -->
-  <img src="https://via.placeholder.com/200x150.png?text=Truck+Left" 
+  <img src="{{ home.image_left.url }}" 
        class="position-absolute top-50 start-0 translate-middle-y d-none d-md-block animate__animated animate__fadeInLeft" 
-       style="max-width: 180px;">
+       style="max-width: 780px;">
 
   <!-- Sağ Yük Maşını -->
-  <img src="https://via.placeholder.com/200x150.png?text=Truck+Right" 
+  <img src="{{ home.image_right.url }}" 
        class="position-absolute top-50 end-0 translate-middle-y d-none d-md-block animate__animated animate__fadeInRight" 
-       style="max-width: 180px;">
+       style="max-width: 780px; padding-right: -20px;">
 </section>
 
 
@@ -102,7 +117,6 @@
         <a href="{% url 'about' %}" class="btn btn-primary btn-lg mt-3">{% trans "Learn More" %}</a>
       </div>
       <div class="col-md-6 text-center" data-aos="fade-left">
-        <img src="https://via.placeholder.com/400x300.png?text=Company+Image" alt="Company" class="img-fluid rounded shadow">
       </div>
     </div>
   </div>

@@ -1,8 +1,67 @@
 {% extends "base.html" %}
-{% load static %}
 {% load i18n %}
+{% load static %}
 {% block content %}
 
+<style>
+  .sidebar-custom {
+    min-height: 100vh;
+    background-color: #f5f5f5; /* açıq boz */
+    font-family: 'Segoe UI', Roboto, sans-serif; /* daha müasir font */
+    position: sticky;
+    top: 0;
+    left: 0;
+}
+
+.sidebar-custom h6 {
+    font-size: 15px;
+    letter-spacing: 0.5px;
+    color: #000; /* başlıqlar qara */
+}
+
+.sidebar-link {
+    color: #333; /* linklər tünd boz/qara */
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s ease;
+}
+
+.sidebar-link:hover {
+    color: #007bff; /* hover zamanı mavi */
+}
+
+.sidebar-link.active {
+    font-weight: bold;
+    color: #007bff;
+}
+.product-card {
+  transition: all 0.4s ease;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+}
+
+.product-card.expanded {
+  transform: scale(1.05);
+  z-index: 10;
+  background: #fff;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+}
+
+.product-detail {
+  margin-top: 15px;
+  padding: 10px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+</style>
 <!-- Hero Section -->
 <section class="py-5 text-center bg-dark text-white">
   <div class="container">
@@ -11,136 +70,178 @@
   </div>
 </section>
 
-<!-- Filter Section (collapsible) -->
-<section class="bg-light py-4 shadow-sm">
-  <div class="container">
-    <button class="btn btn-outline-dark mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#filterCollapse" aria-expanded="false" aria-controls="filterCollapse">
-      <i class="bi bi-funnel-fill me-2"></i>{% trans "Filter Products" %}
-    </button>
-    <div class="collapse" id="filterCollapse">
-      <div class="card card-body">
-        <form method="get" class="row g-3">
-          <div class="col-md-4">
-            <label class="form-label">{% trans "Category" %}</label>
-            <select class="form-select" name="category">
-              <option value="">{% trans "All" %}</option>
-              {% for cat in categories %}
-                <option value="{{ cat.slug }}" {% if request.GET.category == cat.slug %}selected{% endif %}>
-                  {{ cat.name }}
-                </option>
-              {% endfor %}
-            </select>
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">{% trans "Price (Min)" %}</label>
-            <input type="number" name="min_price" class="form-control" placeholder="100" value="{{ request.GET.min_price }}">
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">{% trans "Price (Max)" %}</label>
-            <input type="number" name="max_price" class="form-control" placeholder="1000" value="{{ request.GET.max_price }}">
-          </div>
-          <div class="col-12 text-end">
-            <button type="submit" class="btn btn-primary">
-              <i class="bi bi-search"></i> {% trans "Apply" %}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- Products Section -->
 <section class="py-5">
   <div class="container">
-    <h2 class="text-center fw-bold mb-5">{% trans "Our Products" %}</h2>
-    <div class="row g-4">
+    <div class="row">
 
-      {% for product in page_obj %}
-      <div class="col-md-4">
-        <div class="card h-100 shadow-sm border-0 product-card">
-          {% if product.image %}
-            <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
-          {% else %}
-            <img src="https://via.placeholder.com/400x250.png?text=No+Image" class="card-img-top" alt="{{ product.name }}">
-          {% endif %}
-          <div class="card-body text-center">
-            <h5 class="card-title">{{ product.name }}</h5>
-            <p class="card-text text-muted">
-              {{ product.description|truncatewords:12 }}
-            </p>
-            <p class="fw-bold text-danger">${{ product.price }}</p>
-            <a href="{% url 'product_detail' product.slug %}" class="btn btn-outline-primary">
-              {% trans "View Details" %}
-            </a>
-          </div>
+      <!-- Sidebar -->
+      <div class="col-md-3" style="padding-left:0;">
+        <div class="p-3 border-end sidebar-custom" style="position: relative;">
+      
+          <!-- Parent Categories -->
+          <h6 class="fw-bold mb-3">{% trans "Parent Categories" %}</h6>
+          <ul class="list-unstyled">
+            {% for i in parent %}
+              <li class="mb-2">
+                <a href="?parent={{ i.slug }}" 
+                  class="sidebar-link {% if request.GET.parent == i.slug %}active{% endif %}">
+                  {{ i.name }} ({{ i.products.count }})
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+
+      
+          <hr>
+      
+          <!-- Categories -->
+          <h6 class="fw-bold mb-3">{% trans "Categories" %}</h6>
+          <ul class="list-unstyled">
+            {% for cat in categories %}
+              <li class="mb-2">
+                <a href="?category={{ cat.slug }}" 
+                   class="sidebar-link {% if request.GET.category == cat.slug %}active{% endif %}">
+                  {{ cat.name }} ({{ cat.products.count }})
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+      
+          <hr>
+      
+          <!-- Price Filter -->
+          <h6 class="fw-bold mb-3">{% trans "Filter by Price" %}</h6>
+          <form method="get">
+            <div class="d-flex mb-2">
+              <input type="number" name="min_price" class="form-control form-control-sm me-2" 
+                     placeholder="Min" value="{{ request.GET.min_price }}">
+              <input type="number" name="max_price" class="form-control form-control-sm" 
+                     placeholder="Max" value="{{ request.GET.max_price }}">
+            </div>
+            <button type="submit" class="btn btn-sm btn-outline-dark w-100">{% trans "Reset" %}</button>
+          </form>
+      
         </div>
       </div>
-      {% empty %}
-      <div class="col-12 text-center">
-        <p class="text-muted">{% trans "No products found." %}</p>
-      </div>
-      {% endfor %}
+      
 
+    <!-- Products + Sort -->
+      <div class="col-md-9">
+        <!-- Sort -->
+        <div class="d-flex justify-content-end mb-3">
+          <form method="get">
+            <!-- Hidden inputs to keep filters -->
+            {% if request.GET.category %}
+              <input type="hidden" name="category" value="{{ request.GET.category }}">
+            {% endif %}
+            {% if request.GET.min_price %}
+              <input type="hidden" name="min_price" value="{{ request.GET.min_price }}">
+            {% endif %}
+            {% if request.GET.max_price %}
+              <input type="hidden" name="max_price" value="{{ request.GET.max_price }}">
+            {% endif %}
+
+            <select class="form-select" name="sort" onchange="this.form.submit()">
+              <option value="" {% if not request.GET.sort %}selected{% endif %}>{% trans "Default" %}</option>
+              <option value="price_asc" {% if request.GET.sort == "price_asc" %}selected{% endif %}>{% trans "Price: Low to High" %}</option>
+              <option value="price_desc" {% if request.GET.sort == "price_desc" %}selected{% endif %}>{% trans "Price: High to Low" %}</option>
+              <option value="newest" {% if request.GET.sort == "newest" %}selected{% endif %}>{% trans "Newest First" %}</option>
+              <option value="oldest" {% if request.GET.sort == "oldest" %}selected{% endif %}>{% trans "Oldest First" %}</option>
+            </select>
+          </form>
+        </div>
+
+        <!-- Product Grid -->
+        <div class="row g-4">
+          {% for product in page_obj %}
+          <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0 product-card">
+              {% if product.image %}
+                <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+              {% else %}
+                <img src="https://via.placeholder.com/400x250.png?text=No+Image" class="card-img-top" alt="{{ product.name }}">
+              {% endif %}
+        
+              <div class="card-body text-center">
+                <h5 class="card-title">{{ product.name }}</h5>
+                <p class="card-text text-muted">
+                  {{ product.description|truncatewords:12 }}
+                </p>
+                <p class="fw-bold text-danger">${{ product.price }}</p>
+                <button class="btn btn-outline-primary" onclick="openProductDetail(this)">
+                  {% trans "View Details" %}
+                </button>
+              </div>
+        
+              <!-- Hidden Product Detail -->
+              <div class="product-detail d-none">
+                <hr>
+                <h5>{{ product.name }}</h5>
+                <p>{{ product.description }}</p>
+                <p><strong>Price:</strong> ${{ product.price }}</p>
+                <button class="btn btn-sm btn-dark" onclick="closeProductDetail(this)">Close</button>
+              </div>
+            </div>
+          </div>
+          {% empty %}
+          <div class="col-12 text-center">
+            <p class="text-muted">{% trans "No products found." %}</p>
+          </div>
+          {% endfor %}
+        </div>
+        
+
+        <!-- Pagination -->
+        <div class="mt-4">
+          <nav>
+            <ul class="pagination justify-content-center">
+              {% if page_obj.has_previous %}
+                <li class="page-item">
+                  <a class="page-link" href="?page=1{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.min_price %}&min_price={{ request.GET.min_price }}{% endif %}{% if request.GET.max_price %}&max_price={{ request.GET.max_price }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">&laquo; {% trans "First" %}</a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.min_price %}&min_price={{ request.GET.min_price }}{% endif %}{% if request.GET.max_price %}&max_price={{ request.GET.max_price }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">{% trans "Previous" %}</a>
+                </li>
+              {% endif %}
+
+              {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                  <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                {% elif num > page_obj.number|add:"-3" and num < page_obj.number|add:"3" %}
+                  <li class="page-item"><a class="page-link" href="?page={{ num }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.min_price %}&min_price={{ request.GET.min_price }}{% endif %}{% if request.GET.max_price %}&max_price={{ request.GET.max_price }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">{{ num }}</a></li>
+                {% endif %}
+              {% endfor %}
+
+              {% if page_obj.has_next %}
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.min_price %}&min_price={{ request.GET.min_price }}{% endif %}{% if request.GET.max_price %}&max_price={{ request.GET.max_price }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">{% trans "Next" %}</a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.min_price %}&min_price={{ request.GET.min_price }}{% endif %}{% if request.GET.max_price %}&max_price={{ request.GET.max_price }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}">{% trans "Last" %} &raquo;</a>
+                </li>
+              {% endif %}
+            </ul>
+          </nav>
+        </div>
+
+      </div>
     </div>
   </div>
 </section>
-<!-- Pagination Section -->
-<section class="py-4">
-  <div class="container">
-    <nav aria-label="Page navigation">
-      <ul class="pagination justify-content-center">
-
-        {% if page_obj.has_previous %}
-          <li class="page-item">
-            <a class="page-link" href="?page=1">&laquo; {% trans "First" %}</a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">{% trans "Previous" %}</a>
-          </li>
-        {% endif %}
-
-        {% for num in page_obj.paginator.page_range %}
-          {% if page_obj.number == num %}
-            <li class="page-item active">
-              <span class="page-link">{{ num }}</span>
-            </li>
-          {% elif num > page_obj.number|add:"-3" and num < page_obj.number|add:"3" %}
-            <li class="page-item">
-              <a class="page-link" href="?page={{ num }}">{{ num }}</a>
-            </li>
-          {% endif %}
-        {% endfor %}
-
-        {% if page_obj.has_next %}
-          <li class="page-item">
-            <a class="page-link" href="?page={{ page_obj.next_page_number }}">{% trans "Next" %}</a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" href="?page={ page_obj.paginator.num_pages %}">{% trans "Last" %} &raquo;</a>
-          </li>
-        {% endif %}
-
-      </ul>
-    </nav>
-  </div>
-</section>
-
-
-<!-- Animation Script -->
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const cards = document.querySelectorAll(".product-card");
-    cards.forEach((card, i) => {
-      card.style.opacity = 0;
-      card.style.transform = "translateY(50px)";
-      setTimeout(() => {
-        card.style.transition = "all 0.6s ease";
-        card.style.opacity = 1;
-        card.style.transform = "translateY(0)";
-      }, i * 200);
-    });
-  });
+function openProductDetail(btn) {
+  let card = btn.closest(".product-card");
+  card.classList.add("expanded");
+  card.querySelector(".product-detail").classList.remove("d-none");
+}
+
+function closeProductDetail(btn) {
+  let card = btn.closest(".product-card");
+  card.classList.remove("expanded");
+  card.querySelector(".product-detail").classList.add("d-none");
+}
 </script>
 
 {% endblock %}
+

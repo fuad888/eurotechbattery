@@ -1,7 +1,8 @@
 from django.db import models
 
 class Setting(models.Model):
-    logo = models.ImageField(upload_to='logo/',blank=True, null=True)
+    header_logo = models.ImageField(upload_to='logo/',blank=True, null=True)
+    fotter_logo = models.ImageField(upload_to='logo/',blank=True, null=True)
     title = models.CharField(max_length=100, blank=True, null=True)
     email = models.EmailField(blank=True, null=True)
     phone = models.CharField(max_length=20, blank=True, null=True)

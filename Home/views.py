@@ -1,24 +1,26 @@
 import random
 from django.shortcuts import render
-from products.models import Products, Category
+from products.models import Products, ParentCategory
 from about.models import About
+from Home.models import Homepage
+import random
 
 def home(request):
-    latest_products = Products.objects.all().order_by('-created_at')[:3]  # son 3 məhsul
-    about = About.objects.first()  # şirkət haqqında məlumat
-    categories = Category.objects.all()
+    latest_products = Products.objects.all().order_by('-created_at')[:3]
+    about = About.objects.first()
+    categories = ParentCategory.objects.all()
+    home = Homepage.objects.first()
 
     # Random product
-    product_count = Products.objects.count()
-    random_product = None
-    if product_count > 0:
-        random_index = random.randint(0, product_count - 1)
-        random_product = Products.objects.all()[random_index]
+    products = list(Products.objects.all())
+    random_product = random.choice(products) if products else None
 
     context = {
         'latest_products': latest_products,
         'about': about,
         'categories': categories,
         'random_product': random_product,
+        'home': home,
     }
     return render(request, 'index.html', context)
+

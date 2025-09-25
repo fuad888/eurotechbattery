@@ -1,7 +1,6 @@
 from django.db import models
-from parler.models import TranslatableModel, TranslatedFields
-from ckeditor_uploader.fields import RichTextUploadingField
-from django.utils.text import slugify
 
 
-# Create your models here.
+class Homepage(models.Model):
+    image_left = models.ImageField(upload_to='homepage/', blank=True, null=True)
+    image_right = models.ImageField(upload_to='homepage/', blank=True, null=True)

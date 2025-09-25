@@ -21,7 +21,8 @@ class SettingAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
             'fields': (
-                'logo',
+                'header_logo',
+                'footer_logo',
                 'title',
                 'email',
                 'phone',

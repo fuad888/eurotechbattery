@@ -3,18 +3,40 @@ from django.utils.text import slugify
 from parler.models import TranslatableModel, TranslatedFields
 
 
+from django.db import models
+from django.utils.text import slugify
+from parler.models import TranslatableModel, TranslatedFields
+
+# Parent / Əsas kateqoriya
+class ParentCategory(TranslatableModel):
+    translations = TranslatedFields(
+        name=models.CharField(max_length=200, unique=True, verbose_name="Category Name"),
+    )
+    slug = models.SlugField(max_length=220, unique=True, blank=True)
+    image = models.ImageField(upload_to="parent_categories/", blank=True, null=True)
+
+    class Meta:
+        verbose_name = "Parent Category"
+        verbose_name_plural = "Parent Categories"
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.safe_translation_getter("name", any_language=True))
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.safe_translation_getter("name", any_language=True)
+
+# Child / Alt kateqoriya
 class Category(TranslatableModel):
     translations = TranslatedFields(
         name=models.CharField(max_length=200, unique=True, verbose_name="Category Name"),
         description=models.TextField(blank=True, null=True, verbose_name="Description"),
     )
     slug = models.SlugField(max_length=220, unique=True, blank=True)
-    parent = models.ForeignKey(  # self-referencing for parent-child hierarchy
-        "self",
-        on_delete=models.CASCADE,
-        related_name="subcategories",
-        blank=True,
-        null=True
+    parent = models.ManyToManyField(
+        ParentCategory,
+        related_name="categories",
     )
 
     class Meta:
@@ -27,16 +49,13 @@ class Category(TranslatableModel):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        full_path = [self.safe_translation_getter("name", any_language=True)]
-        parent = self.parent
-        while parent is not None:
-            full_path.append(parent.safe_translation_getter("name", any_language=True))
-            parent = parent.parent
-        return " → ".join(full_path[::-1])  # Parent → Child → Subchild format
+        return f"{self.parent} → {self.safe_translation_getter('name', any_language=True)}"
+
 
 
 class Products(TranslatableModel):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="products")
+    parent_category = models.ForeignKey(ParentCategory, on_delete=models.CASCADE, related_name="products")
     translations = TranslatedFields(
         name=models.CharField(max_length=250, verbose_name="Product Name"),
         description=models.TextField(blank=True, null=True, verbose_name="Description"),
