@@ -93,11 +93,11 @@ WSGI_APPLICATION = 'eurotechbattery.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'eurotech_db',
-        'USER': 'eurotech_admin',
-        'PASSWORD': 'euro13579',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': os.environ.get('DATABASE_NAME', 'eurotech_db'),
+        'USER': os.environ.get('DATABASE_USER', 'eurotech_admin'),
+        'PASSWORD': os.environ.get('DATABASE_PASSWORD', 'euro13579'),
+        'HOST': os.environ.get('DATABASE_HOST', 'db'),
+        'PORT': os.environ.get('DATABASE_PORT', '5432'),
     }
 }
 
