@@ -1,8 +1,18 @@
 from django.contrib import admin
 from parler.admin import TranslatableAdmin
-from products.models import Category, Products, ParentCategory
+from products.models import Category, Products, ParentCategory,Productpage
 
+@admin.register(Productpage)
+class ProductPageAdmin(TranslatableAdmin):
+    list_display = ("hero_title", "hero_subtitle", "hero_image")
+    search_fields = ("translations__title",)
 
+    def get_title(self, obj):
+        return obj.safe_translation_getter("title", any_language=True)
+    get_title.short_description = "Page Title"
+
+    def get_prepopulated_fields(self, request, obj=None):
+        return {"slug": ("title",)}
 
 @admin.register(Category)
 class CategoryAdmin(TranslatableAdmin):

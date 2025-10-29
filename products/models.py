@@ -8,6 +8,18 @@ from django.utils.text import slugify
 from parler.models import TranslatableModel, TranslatedFields
 
 # Parent / Əsas kateqoriya
+class Productpage(TranslatableModel):
+    translations = TranslatedFields(
+        hero_title=models.CharField(max_length=200, verbose_name="Hero Title"),
+        hero_subtitle=models.CharField(max_length=300, verbose_name="Hero Subtitle"),
+        hero_image=models.ImageField(upload_to="hero_images/", blank=True, null=True, verbose_name="Hero Image"),
+    )
+    class Meta:
+        verbose_name = "Product Page"
+        verbose_name_plural = "Product Pages"
+
+    
+
 class ParentCategory(TranslatableModel):
     translations = TranslatedFields(
         name=models.CharField(max_length=200, unique=True, verbose_name="Category Name"),
