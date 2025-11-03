@@ -9,11 +9,190 @@
   }
 </style>
 <!-- Hero Section -->
-<section class="py-5 text-center bg-dark text-white">
+<!-- <section class="py-5 text-center bg-dark text-white">
   <div class="container">
     <h1 class="fw-bold">{% trans "Truck Batteries" %}</h1>
     <p class="lead">{% trans "High-performance batteries designed for heavy-duty trucks and machinery" %}</p>
   </div>
-</section>
+</section> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Eurotech Battery - Products</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+  <!-- Google Fonts (Montserrat) -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+
+  <!-- Custom CSS -->
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    .section-title {
+      font-weight: 700;
+      font-size: 2.5rem;
+      margin-bottom: 3rem;
+      text-align: center;
+    }
+
+    .product-card {
+      background: #fff;
+      color: #333;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 30px rgba(0,0,0,0.2);
+    }
+
+    .product-img {
+      height: 200px;
+      object-fit: cover;
+      width: 100%;
+    }
+
+    .card-body {
+      padding: 1.5rem;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      color: #1e3c72;
+    }
+
+    .card-text {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: #555;
+      flex-grow: 1;
+      margin-bottom: 1rem;
+    }
+
+    .divider {
+      width: 40px;
+      height: 3px;
+      background: #2a5298;
+      margin: 0.5rem 0 1rem;
+    }
+
+    .btn-learn {
+      background: #2a5298;
+      color: white;
+      border: none;
+      padding: 0.5rem 1.2rem;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      align-self: flex-start;
+    }
+
+    .btn-learn:hover {
+      background: #1e3c72;
+      transform: scale(1.05);
+    }
+
+    .chat-bubble {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      background: #2a5298;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      cursor: pointer;
+      z-index: 1000;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(42, 82, 152, 0.7); }
+      70% { box-shadow: 0 0 0 15px rgba(42, 82, 152, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(42, 82, 152, 0); }
+    }
+
+    .chat-bubble img {
+      width: 35px;
+      filter: brightness(0) invert(1);
+    }
+
+    @media (max-width: 768px) {
+      .section-title {
+        font-size: 2rem;
+      }
+      .product-img {
+        height: 160px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container py-5">
+    <h1 class="section-title">Products</h1>
+
+    <div class="row g-4">
+      <!-- Lithium Solutions -->
+      <div class="col-lg-3 col-md-6">
+        <div class="product-card">
+          <img src="{% static 'eurotechbattery/Power-Turf-Shop-Hero-Image-500px-Parts-_-Accessories-Batteries-Trojan-T105-Battery-6V.jpeg' %}" alt="Lithium Solutions" class="product-img">
+          <div class="card-body">
+            <h5 class="card-title">Lithium Solutions</h5>
+            <div class="divider"></div>
+            <p class="card-text">
+              Litium həlləri əsasən şəbəkə enerjisi, yaşıl enerji saxlanması və nəqliyyatda yüksək enerji sıxlığı, əla performans və uzun ömür ilə istifadə olunur.
+            </p>
+            <a href="{% url 'products_details' %}">
+                Daha çox
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chat Bubble -->
+  <div class="chat-bubble" onclick="alert('Sualınız var? Bizə yazın!')">
+    <img src="https://cdn-icons-png.flaticon.com/512/5948/5948565.png" alt="Chat">
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Custom JS -->
+  <!-- <script>
+    // Optional: Add smooth scroll or other interactions
+    document.querySelectorAll('.btn-learn').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        alert('Bu bölmə tezliklə aktiv olacaq!');
+      });
+    });
+  </script> -->
 
 {% endblock content %}

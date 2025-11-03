@@ -44,3 +44,7 @@ def products(request):
         "parent": parent_categories,
         "parent_slug": parent_slug,
     })
+
+
+def products_details(request):
+    return render(request, 'products/products_details.html')

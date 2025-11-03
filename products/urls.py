@@ -3,7 +3,8 @@ from . import views
 
 urlpatterns = [
     # Hamı məhsullar səhifəsi (slug tələb etmir)
-    path("products/", views.products, name="products"),
+    path("", views.products, name="products"),
+    path('details/', views.products_details, name='products_details'),
 
     # # Tək məhsul səhifəsi (slug tələb olunur)
     # path("products/<slug:slug>/", views.product_detail, name="product_detail"),

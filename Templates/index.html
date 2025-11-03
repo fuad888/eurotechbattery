@@ -56,7 +56,7 @@
       {% for i in categories %}
       <div class="col-md-3 col-6" data-aos="flip-left" data-aos-delay="{{ forloop.counter0 }}00">
         <div class="card border-0 shadow-sm h-100 hover-shadow transition">
-          <img src="{{ i.image.url }}" 
+          <img src="{% static '/Users/fuad/Desktop/eurotechbattery/static/Power-Turf-Shop-Hero-Image-500px-Parts-_-Accessories-Batteries-Trojan-T105-Battery-6V.webp' %}" 
                class="card-img-top rounded-top" alt="Category {{ forloop.counter }}">
           <option value="{{ cat.slug }}" {% if request.GET.category == cat.slug %}selected{% endif %}>
         </div>
