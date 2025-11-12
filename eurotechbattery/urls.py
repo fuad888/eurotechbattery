@@ -33,7 +33,8 @@ urlpatterns += i18n_patterns(
     path('', include('Home.urls')),
     path('contact/', include('contact.urls')),
     path('about/', include('about.urls')),
-    path('products/', include('products.urls')),  # BURADA
+    path('products/', include('products.urls')),
+    path('details/<slug:slug>/', include('products.urls'), name='products_details'),  # BURADA
     prefix_default_language=False
 )
 if settings.DEBUG:

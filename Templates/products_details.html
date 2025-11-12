@@ -1,0 +1,216 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}
+    {{ product.name }} - LEOCH Industrial Products
+{% endblock %}
+
+{% block content %}
+<title>{{ product.name }} - Your Reliable Power Supply</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f8f9fa;
+}
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+/* Header */
+.header {
+    background-color: #004080;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+}
+.page-title {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+.welcome-text {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+/* Section */
+.section {
+    background: #fff;
+    margin: 50px auto;
+    max-width: 1200px;
+    padding: 40px 50px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+.section h2 {
+    color: #2d2d8a;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.section p {
+    color: #555;
+    line-height: 1.6;
+    margin-top: 10px;
+}
+.product {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f7f9fc;
+    padding: 30px 40px;
+    border-radius: 12px;
+    margin-top: 30px;
+}
+.product img {
+    width: 280px;
+    max-height: 220px;
+    border-radius: 12px;
+    object-fit: contain;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.product-info {
+    flex: 1;
+    margin-left: 40px;
+}
+.product-info h3 {
+    color: #2d2d8a;
+    margin: 0 0 15px;
+    font-size: 26px;
+    font-weight: 700;
+}
+.product-info p {
+    color: #666;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+.price {
+    font-size: 1.8rem;
+    color: #2a5298;
+    font-weight: 600;
+    margin: 15px 0;
+}
+.btn {
+    display: inline-block;
+    border: 2px solid #2d2d8a;
+    color: #2d2d8a;
+    padding: 12px 28px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.3s;
+}
+.btn:hover {
+    background: #2d2d8a;
+    color: #fff;
+}
+.back-link {
+    display: inline-block;
+    margin-top: 30px;
+    color: #666;
+    text-decoration: none;
+    font-size: 0.95rem;
+}
+.back-link:hover {
+    color: #2d2d8a;
+    text-decoration: underline;
+}
+@media (max-width: 768px) {
+    .product {
+        flex-direction: column;
+        text-align: center;
+    }
+    .product-info {
+        margin-left: 0;
+        margin-top: 25px;
+    }
+    .product img {
+        width: 200px;
+    }
+    .product-info h3 {
+        font-size: 22px;
+    }
+}
+</style>
+
+<!-- Header -->
+<header class="header">
+    <div class="container">
+        <h1 class="page-title">{{ product.name }}</h1>
+        <p class="welcome-text">
+            {% if product.category %}
+                {{ product.category.name }} | 
+            {% endif %}
+            Reliable Power Solutions for All Applications
+        </p>
+    </div>
+</header>
+
+<!-- Product Detail Section -->
+<section class="section">
+    <h2>Batareya Məlumatları</h2>
+    <p>{{ product.description|default:"Məhsul haqqında ətraflı məlumat admin paneldən əlavə edilə bilər."|linebreaks }}</p>
+
+    <div class="product">
+        <!-- Şəkil -->
+        {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+        {% else %}
+            <img src="{% static 'eurotechbattery/Power-Turf-Shop-Hero-Image-500px-Parts-_-Accessories-Batteries-Trojan-T105-Battery-6V.jpeg' %}" 
+                 alt="{{ product.name }}">
+        {% endif %}
+
+        <!-- Məlumatlar -->
+        <div class="product-info">
+            <h3>{{ product.name }}</h3>
+            
+            {% if product.price %}
+                <div class="price">₼{{ product.price }}</div>
+            {% endif %}
+        
+            <p>
+                <strong>Kod:</strong> {{ product.slug|upper }}<br>
+                {% if product.category %}
+                    <strong>Kateqoriya:</strong> {{ product.category.name }}<br>
+                {% endif %}
+                {% if product.parent_category %}
+                    <strong>Üst Kateqoriya:</strong> {{ product.parent_category.name }}<br>
+                {% endif %}
+                <strong>Yaradılma tarixi:</strong> {{ product.created_at|date:"d.m.Y" }}
+            </p>
+        
+            <!-- PDF DÜYMƏSİ -->
+            {% if product.pdf %}
+                <a href="{{ product.pdf.url }}" 
+                   class="btn" 
+                   style="background: #e74c3c; margin-top: 15px; display: inline-flex; align-items: center; gap: 8px;"
+                   download>
+                    PDF Yüklə
+                </a>
+            {% else %}
+                <p style="color: #ccc; font-style: italic; margin-top: 15px;">
+                    PDF faylı əlavə edilməyib.
+                </p>
+            {% endif %}
+        
+            <!-- Geri keçid -->
+            <a href="{% url 'products' %}" class="btn" style="margin-top: 10px;">
+                Bütün Məhsullara Qayıt
+            </a>
+        </div>
+    </div>
+
+    <a href="{% url 'products' %}" class="back-link">← Bütün məhsullara qayıt</a>
+</section>
+
+{% endblock %}
+
+<!-- JavaScript (artıq lazım deyil, çünki dinamik məlumat var) -->

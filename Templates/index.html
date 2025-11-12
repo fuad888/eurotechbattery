@@ -82,7 +82,12 @@
       <div class="carousel-inner">
         {% for product in latest_products %}
         <div class="carousel-item {% if forloop.first %}active{% endif %}">
-          <img src="{{ product.image.url }}" class="d-block w-100" alt="{{ product.name }}">
+          {% if product.image %}
+    <img src="{{ product.image.url }}" class="d-block w-100" alt="{{ product.name }}">
+{% else %}
+    <img src="{% static 'eurotechbattery/Power-Turf-Shop-Hero-Image-500px-Parts-_-Accessories-Batteries-Trojan-T105-Battery-6V.jpeg' %}" 
+         class="d-block w-100" alt="{{ product.name }}">
+{% endif %}
         </div>
         {% endfor %}
       </div>

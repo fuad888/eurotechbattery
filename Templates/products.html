@@ -1,198 +1,186 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load static %}
+
 {% block content %}
-
 <style>
-  .hero {
-    background: linear-gradient(to right, #434343, #000000);
-  }
-</style>
-<!-- Hero Section -->
-<!-- <section class="py-5 text-center bg-dark text-white">
-  <div class="container">
-    <h1 class="fw-bold">{% trans "Truck Batteries" %}</h1>
-    <p class="lead">{% trans "High-performance batteries designed for heavy-duty trucks and machinery" %}</p>
-  </div>
-</section> -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Eurotech Battery - Products</title>
-
-  <!-- Bootstrap 5 CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
-
-  <!-- Google Fonts (Montserrat) -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-
-  <!-- Custom CSS -->
-  <style>
-    body {
-      font-family: 'Montserrat', sans-serif;
-      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-      color: #fff;
-      min-height: 100vh;
+    body { font-family: 'Montserrat', sans-serif; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: #fff; min-height: 100vh; }
+    .section-title { font-weight: 700; font-size: 2.5rem; margin-bottom: 3rem; text-align: center; }
+    .category-card, .parent-card {
+        background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 16px; overflow: hidden;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.2); transition: all 0.3s ease; text-align: center; padding: 1.5rem;
     }
-
-    .section-title {
-      font-weight: 700;
-      font-size: 2.5rem;
-      margin-bottom: 3rem;
-      text-align: center;
-    }
-
-    .product-card {
-      background: #fff;
-      color: #333;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .product-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 20px 30px rgba(0,0,0,0.2);
-    }
-
-    .product-img {
-      height: 200px;
-      object-fit: cover;
-      width: 100%;
-    }
-
-    .card-body {
-      padding: 1.5rem;
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .card-title {
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin-bottom: 0.75rem;
-      color: #1e3c72;
-    }
-
-    .card-text {
-      font-size: 0.9rem;
-      line-height: 1.6;
-      color: #555;
-      flex-grow: 1;
-      margin-bottom: 1rem;
-    }
-
-    .divider {
-      width: 40px;
-      height: 3px;
-      background: #2a5298;
-      margin: 0.5rem 0 1rem;
-    }
-
-    .btn-learn {
-      background: #2a5298;
-      color: white;
-      border: none;
-      padding: 0.5rem 1.2rem;
-      border-radius: 50px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      transition: all 0.3s ease;
-      align-self: flex-start;
-    }
-
-    .btn-learn:hover {
-      background: #1e3c72;
-      transform: scale(1.05);
-    }
-
-    .chat-bubble {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 60px;
-      height: 60px;
-      background: #2a5298;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-      cursor: pointer;
-      z-index: 1000;
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(42, 82, 152, 0.7); }
-      70% { box-shadow: 0 0 0 15px rgba(42, 82, 152, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(42, 82, 152, 0); }
-    }
-
-    .chat-bubble img {
-      width: 35px;
-      filter: brightness(0) invert(1);
-    }
-
+    .category-card:hover, .parent-card:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(0,0,0,0.3); }
+    .category-img, .parent-img { height: 120px; object-fit: contain; margin-bottom: 1rem; }
+    .category-title, .parent-title { font-size: 1.3rem; font-weight: 600; color: #fff; }
+    .product-card { background: #fff; color: #333; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.15); transition: transform 0.3s ease; height: 100%; display: flex; flex-direction: column; }
+    .product-card:hover { transform: translateY(-10px); box-shadow: 0 20px 30px rgba(0,0,0,0.2); }
+    .product-img { height: 200px; object-fit: cover; width: 100%; }
+    .card-body { padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; }
+    .card-title { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.75rem; color: #1e3c72; }
+    .card-text { font-size: 0.9rem; line-height: 1.6; color: #555; flex-grow: 1; margin-bottom: 1rem; }
+    .divider { width: 40px; height: 3px; background: #2a5298; margin: 0.5rem 0 1rem; }
+    .btn-learn { background: #2a5298; color: white; border: none; padding: 0.5rem 1.2rem; border-radius: 50px; font-size: 0.9rem; font-weight: 500; transition: all 0.3s ease; align-self: flex-start; }
+    .btn-learn:hover { background: #1e3c72; transform: scale(1.05); }
+    .back-btn { display: inline-block; margin: 1.5rem 0; color: #a0d8ff; text-decoration: underline; font-size: 1rem; }
+    .back-btn:hover { color: #fff; }
+    .breadcrumb { background: none; padding: 0; margin-bottom: 1.5rem; font-size: 1.1rem; }
+    .breadcrumb a { color: #a0d8ff; text-decoration: underline; }
+    .breadcrumb span { color: #fff; margin: 0 8px; }
     @media (max-width: 768px) {
-      .section-title {
-        font-size: 2rem;
-      }
-      .product-img {
-        height: 160px;
-      }
+        .section-title { font-size: 2rem; }
+        .product-img { height: 160px; }
     }
-  </style>
-</head>
-<body>
+</style>
 
-  <div class="container py-5">
-    <h1 class="section-title">Products</h1>
+<div class="container py-5">
 
-    <div class="row g-4">
-      <!-- Lithium Solutions -->
-      <div class="col-lg-3 col-md-6">
-        <div class="product-card">
-          <img src="{% static 'eurotechbattery/Power-Turf-Shop-Hero-Image-500px-Parts-_-Accessories-Batteries-Trojan-T105-Battery-6V.jpeg' %}" alt="Lithium Solutions" class="product-img">
-          <div class="card-body">
-            <h5 class="card-title">Lithium Solutions</h5>
-            <div class="divider"></div>
-            <p class="card-text">
-              Litium həlləri əsasən şəbəkə enerjisi, yaşıl enerji saxlanması və nəqliyyatda yüksək enerji sıxlığı, əla performans və uzun ömür ilə istifadə olunur.
-            </p>
-            <a href="{% url 'products_details' %}">
-                Daha çox
-            </a>
-          </div>
-        </div>
-      </div>
+    <!-- Başlıq -->
+    <h1 class="section-title">
+        {% if category_slug %}
+            {{ category_slug|title }} Məhsulları
+        {% elif parent_slug %}
+            {{ parent_slug|title }} Kateqoriyaları
+        {% else %}
+            Əsas Kateqoriyalar
+        {% endif %}
+    </h1>
+
+    <!-- Breadcrumb (geri keçid) -->
+    {% if parent_slug or category_slug %}
+    <div class="breadcrumb">
+        <a href="{% url 'products' %}">Əsas səhifə</a>
+        {% if parent_slug %}
+            <span>→</span> <span>{{ parent_slug|title }}</span>
+            {% if category_slug %}
+                <span>→</span> <span>{{ category_slug|title }}</span>
+            {% endif %}
+        {% endif %}
     </div>
-  </div>
+    {% endif %}
 
-  <!-- Chat Bubble -->
-  <div class="chat-bubble" onclick="alert('Sualınız var? Bizə yazın!')">
-    <img src="https://cdn-icons-png.flaticon.com/512/5948/5948565.png" alt="Chat">
-  </div>
+    <!-- 1. ƏSAS SƏHİFƏ: ParentCategory kartları -->
+    {% if not parent_slug and not category_slug %}
+        <div class="row g-4 mb-5">
+            {% for parent in parent_categories %}
+            <div class="col-lg-3 col-md-4 col-6">
+                <a href="?parent={{ parent.slug }}" class="text-decoration-none">
+                    <div class="parent-card">
+                        {% if parent.image %}
+                            <img src="{{ parent.image.url }}" alt="{{ parent.name }}" class="parent-img img-fluid">
+                        {% else %}
+                            <img src="{% static 'eurotechbattery/default-parent.png' %}" alt="{{ parent.name }}" class="parent-img img-fluid">
+                        {% endif %}
+                        <h5 class="parent-title">{{ parent.name }}</h5>
+                    </div>
+                </a>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p class="text-white">Üst kateqoriya tapılmadı.</p>
+            </div>
+            {% endfor %}
+        </div>
 
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <div class="text-center mt-5">
+            <p class="text-white" style="font-size: 1.2rem;">
+                Kateqoriyaları seçmək üçün yuxarıdakı bölmələrdən birinə klikləyin.
+            </p>
+        </div>
 
-  <!-- Custom JS -->
-  <!-- <script>
-    // Optional: Add smooth scroll or other interactions
-    document.querySelectorAll('.btn-learn').forEach(btn => {
-      btn.addEventListener('click', function(e) {
-        e.preventDefault();
-        alert('Bu bölmə tezliklə aktiv olacaq!');
-      });
-    });
-  </script> -->
+    <!-- 2. PARENT SEÇİLDİ: Category kartları -->
+    {% elif parent_slug and not category_slug %}
+        <div class="row g-4 mb-5">
+            {% for cat in categories %}
+            <div class="col-lg-3 col-md-4 col-6">
+                <a href="?parent={{ parent_slug }}&category={{ cat.slug }}" class="text-decoration-none">
+                    <div class="category-card">
+                        {% if cat.image %}
+                            <img src="{{ cat.image.url }}" alt="{{ cat.name }}" class="category-img img-fluid">
+                        {% else %}
+                            <img src="{% static 'eurotechbattery/default-category.png' %}" alt="{{ cat.name }}" class="category-img img-fluid">
+                        {% endif %}
+                        <h5 class="category-title">{{ cat.name }}</h5>
+                    </div>
+                </a>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p class="text-white">Bu üst kateqoriyada alt kateqoriya tapılmadı.</p>
+            </div>
+            {% endfor %}
+        </div>
 
-{% endblock content %}
+        <div class="text-center mt-5">
+            <p class="text-white" style="font-size: 1.2rem;">
+                Məhsulları görmək üçün alt kateqoriyalardan birini seçin.
+            </p>
+        </div>
+
+    <!-- 3. CATEGORY SEÇİLDİ: Məhsullar -->
+    {% else %}
+        <div class="row g-4">
+            {% for product in page_obj %}
+            <div class="col-lg-3 col-md-6">
+                <div class="product-card h-100 d-flex flex-column">
+                    <!-- Şəkil (xətasız) -->
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-img img-fluid">
+                    {% else %}
+                        <img src="{% static 'eurotechbattery/Power-Turf-Shop-Hero-Image-500px-Parts-_-Accessories-Batteries-Trojan-T105-Battery-6V.jpeg' %}" 
+                             alt="{{ product.name }}" class="product-img img-fluid">
+                    {% endif %}
+
+                    <!-- Məlumat -->
+                    <div class="card-body d-flex flex-column flex-grow-1">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <div class="divider my-2"></div>
+                        <p class="card-text flex-grow-1">{{ product.description|truncatewords:20 }}</p>
+                        
+                        <!-- DÜYMƏ: Məhsul detallarına keçid -->
+                        <a href="{% url 'products_details' product.slug %}" class="btn-learn mt-auto">Daha çox</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p class="text-white">Bu kateqoriyada məhsul tapılmadı.</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if page_obj.has_other_pages %}
+        <nav aria-label="Page navigation" class="mt-5">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if parent_slug %}&parent={{ parent_slug }}{% endif %}{% if category_slug %}&category={{ category_slug }}{% endif %}">Əvvəlki</a>
+                    </li>
+                {% endif %}
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                    {% else %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ num }}{% if parent_slug %}&parent={{ parent_slug }}{% endif %}{% if category_slug %}&category={{ category_slug }}{% endif %}">{{ num }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if parent_slug %}&parent={{ parent_slug }}{% endif %}{% if category_slug %}&category={{ category_slug }}{% endif %}">Sonrakı</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+
+        <!-- Geri keçid (məhsullar səhifəsində) -->
+        <div class="text-center">
+            <a href="?parent={{ parent_slug }}" class="back-btn">Kateqoriyalara qayıt</a>
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}
