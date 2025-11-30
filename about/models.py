@@ -7,8 +7,12 @@ class Aboutpage(TranslatableModel):
     translations = TranslatedFields(
         title = models.CharField(max_length=200, verbose_name=_("Title"))
     )
-    hero_photo = models.ImageField(upload_to='about_hero_photos/', verbose_name=_("Hero Photo"))
-
+    hero_text = models.TextField(verbose_name=_("Hero Text"))
+    hero_photo = models.ImageField(upload_to='about_hero_photos/', verbose_name=_("Hero Photo"),null=True, blank=True)
+    hero_bg_color = models.CharField(
+        max_length=20,
+        verbose_name="Hero Section Background Color"
+    )
     class Meta:
         verbose_name = _("About Page")
         verbose_name_plural = _("About Pages")

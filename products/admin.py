@@ -42,7 +42,7 @@ class ParentCategoryAdmin(TranslatableAdmin):
 
 @admin.register(Products)
 class ProductsAdmin(TranslatableAdmin):
-    list_display = ("get_name", "category", "price", "created_at","pdf")
+    list_display = ("get_name", "category", "price", "created_at","pdf","voltage","model_number","amperage",)
     list_filter = ("category",)
     search_fields = ("translations__name",)
 

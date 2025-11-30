@@ -76,6 +76,8 @@
       width: 100%;
     }
   </style>
+
+
 </head>
 <body style="display:flex; flex-direction:column; min-height:100vh; margin:0;">
 
@@ -97,11 +99,13 @@
         <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">{% trans "Contact" %}</a></li>
       </ul>
       <ul class="navbar-nav ms-auto">
+        {% if setting_obj.address %}
         <li class="nav-item">
             <a class="nav-link text-dark" href="tel:{{ setting_obj.phone }}">
                 <i class="fa fa-phone me-2 text-danger"></i>{{ setting_obj.phone }}
             </a>
         </li>
+        {% endif %}
         <li class="nav-item">
             <a class="nav-link text-dark" href="mailto:{{ setting_obj.email }}">
                 <i class="fa fa-envelope me-2 text-danger"></i>{{ setting_obj.email }}
@@ -111,7 +115,7 @@
     </div>
   
     <!-- DİL SEÇİMİ -->
-    <form action="{% url 'set_language' %}" method="post" class="d-inline animate__animated animate__fadeInRight">
+    <!-- <form action="{% url 'set_language' %}" method="post" class="d-inline animate__animated animate__fadeInRight">
       {% csrf_token %}
       <input type="hidden" name="next" value="{{ request.path }}">
       <input type="hidden" name="language" value="az">
@@ -128,7 +132,7 @@
       <input type="hidden" name="next" value="{{ request.path }}">
       <input type="hidden" name="language" value="ru">
       <button type="submit" class="btn btn-link p-1" style="font-size:1.2rem; text-decoration:none;">🇷🇺</button>
-    </form>
+    </form> -->
 </nav>
   
 

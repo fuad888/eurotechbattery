@@ -4,10 +4,32 @@
 {% block content %}
 
 <!-- Hero Section -->
-<section class="py-3 bg-primary text-white text-center">   <!-- py-5 → py-3 -->
-  <div class="container">
-    <h1 class="fw-bold">{{ about_page.title }}</h1>
-  </div>
+<!-- HERO SECTION – Specific to battery company, strong and professional -->
+<section class="position-relative text-white overflow-hidden" 
+         style="min-height: 15vh; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);">
+
+    <!-- Content -->
+    <div class="container position-relative" style="z-index: 2;">
+        <div class="row align-items-center min-vh-15">
+            <div class="col-lg-8 mx-auto text-center">
+                <!-- Heading -->
+                <h1 class="display-3 fw-bold mb-4 animate__animated animate__fadeInDown">
+                    {{ about_page.title }}
+                </h1>
+                <!-- Subheading (20 years experience, warranty etc.) -->
+                <p class="lead fs-4 mb-5 animate__animated animate__fadeInUp" style="animation-delay: 0.3s;">
+                    {{ about_page.hero_text|default:"Over 20 years of experience • Official warranty • Free delivery" }}
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Battery icons (decorative) -->
+    <div class="position-absolute bottom-0 start-0 end-0 text-center pb-4 opacity-50">
+        <i class="bi bi-battery-full fs-1 mx-3"></i>
+        <i class="bi bi-battery-charging fs-1 mx-3"></i>
+        <i class="bi bi-battery-half fs-1 mx-3"></i>
+    </div>
 </section>
 
 <!-- Company Story -->
@@ -15,10 +37,7 @@
   <div class="container">
     <div class="row align-items-center">
       <div class="col-md-6">
-        <img src="{{ about_page.hero_photo.url }}" alt="Company Image" class="img-fluid rounded shadow">
-      </div>
-      <div class="col-md-6">
-        <h2 class="fw-bold">{% trans "Our Story" %}</h2>
+        <h2 class="fw-bold" style="text-align: center;">{% trans "Our Story" %}</h2>
         <p>{{ about_info.company_story }}</p>
       </div>
     </div>
@@ -26,36 +45,34 @@
 </section>
 
 <!-- Mission & Vision -->
-<section class="bg-light py-5" style="color: black;">
+<section class="py-5 bg-light">
   <div class="container">
-    <div class="row text-center">
-      <div class="col-md-6">
-        <h3 class="fw-bold">{% trans "Our Mission" %}</h3>
-        <p>{{ about_info.mission}}</p>
+      <div class="row g-5 justify-content-center">
+
+          <!-- MISSION -->
+          <div class="col-lg-5 col-md-6">
+              <div class="bg-white p-5 rounded-4 shadow-sm" data-aos="fade-up">
+                  <h3 class="fw-bold text-dark mb-4 fs-3 text-center">{% trans "Our Mission" %}</h3>
+                  <p class="text-dark fs-5 lh-base text-break">
+                      {{ about_info.mission|safe }}
+                  </p>
+              </div>
+          </div>
+
+          <!-- VISION -->
+          <div class="col-lg-5 col-md-6">
+              <div class="bg-white p-5 rounded-4 shadow-sm" data-aos="fade-up" data-aos-delay="150">
+                  <h3 class="fw-bold text-dark mb-4 fs-3 text-center">{% trans "Our Vision" %}</h3>
+                  <p class="text-dark fs-5 lh-base text-break">
+                      {{ about_info.vision|safe }}
+                  </p>
+              </div>
+          </div>
+
       </div>
-      <div class="col-md-6">
-        <h3 class="fw-bold">{% trans "Our Vision" %}</h3>
-        <p>{{ about_info.vision }}</p>
-      </div>
-    </div>
   </div>
 </section>
 
-<!-- Team Section -->
-<section class="py-5" style="color: black;">
-  <div class="container">
-    <h2 class="text-center mb-5 fw-bold">{% trans "Meet Our Team" %}</h2>
-    <div class="row text-center">
-      {% for member in team_members %}
-      <div class="col-md-4">
-        <img src="{{ member.photo.url }}" alt="{{ member.name }}" class="rounded-circle mb-3" style="width:150px; height:150px; object-fit:cover;">
-        <h5>{{ member.name }}</h5>
-        <p class="text-muted">{{ member.position }}</p>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
-</section>
 
 
 {% endblock %}

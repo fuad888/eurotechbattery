@@ -1,137 +1,162 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static i18n %}
+
 {% block content %}
-{% load i18n %}
 
-<!-- Hero Section -->
-<section class="hero position-relative d-flex align-items-center justify-content-center text-center text-white" style="height: 500px; overflow: hidden;">
-  <!-- Background Image -->
-  <div class="hero-bg position-absolute top-0 start-0 w-100 h-100" 
-     style="background-image: url({% static 'eurotechbattery/heroimage.jpeg' %}); 
-            background-size: cover;
-            background-position: center;
-            filter: blur(4px) brightness(0.6);
-            z-index: 0;">
-  </div>
+<!-- 1. HERO – full screen, strong -->
+<section class="hero position-relative text-white d-flex align-items-center" style="min-height: 95vh; background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.75)), url({% static 'eurotechbattery/heroimage.jpeg' %}) center/cover no-repeat;">
+    <div class="container position-relative" style="z-index: 2;">
+        <div class="row justify-content-center text-center">
+            <div class="col-lg-10">
+                {% if random_product %}
+                <h1 class="display-3 fw-bold mb-4 animate__animated animate__fadeInUp">
+                    {{ random_product.name }}
+                </h1>
+                <p class="fs-3 mb-4 text-warning fw-bold animate__animated animate__fadeInUp" style="animation-delay: 0.3s;">
+                    {{ random_product.category.name }}
+                </p>
+                <p class="lead mb-5 animate__animated animate__fadeInUp" style="animation-delay: 0.6s; max-width: 700px; margin: 0 auto;">
+                    The largest battery warehouse in Azerbaijan • Official warranty • Free delivery
+                </p>
+                <div class="animate__animated animate__fadeInUp" style="animation-delay: 0.9s;">
+                    <a href="{% url 'products' %}" class="btn btn-warning btn-lg px-5 py-3 me-3 shadow-lg fw-bold">
+                        ALL PRODUCTS
+                    </a>
+                    <a href="{% url 'contact' %}" class="btn btn-outline-light btn-lg px-5 py-3 shadow-lg">
+                        ☎ CALL US
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
 
-  <!-- Content -->
-  <section class="py-5 position-relative" data-aos="fade-up" data-aos-duration="1000">
+<!-- 2. TOP 3 TRUST BLOCKS -->
+<section class="py-5 bg-white border-bottom">
     <div class="container">
-      {% if random_product %}
-      <div class="row align-items-center">
-        
-        <!-- Mətn solda -->
-        <div class="col-md-6">
-          <h1 class="display-4 fw-bold mb-3 animate__animated animate__fadeInDown" style="line-height: 1.2; font-size: 2.8rem;">
-            {{ random_product.name }} <br>
-            <span class="fw-bold text-warning">{{ random_product.category.name }}</span>
-          </h1>
-          <a href="{% url 'products' %}" class="btn btn-outline-light btn-lg mt-3 shadow animate__animated animate__pulse animate__infinite">
-            ALL Products
-          </a>
+        <div class="row text-center g-4">
+            <div class="col-md-4" data-aos="fade-up">
+                <div class="p-4">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="bi bi-shield-check fs-2"></i>
+                    </div>
+                    <h5 class="fw-bold">3-YEAR WARRANTY</h5>
+                    <p class="text-muted small">Official warranty on all products</p>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="p-4">
+                    <div class="bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="bi bi-truck fs-2"></i>
+                    </div>
+                    <h5 class="fw-bold">FREE DELIVERY</h5>
+                    <p class="text-muted small">Within Baku and regions in 24-48 hours</p>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="p-4">
+                    <div class="bg-warning text-dark rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="bi bi-headset fs-2"></i>
+                    </div>
+                    <h5 class="fw-bold">24/7 SUPPORT</h5>
+                    <p class="text-muted small">We are always by your side</p>
+                </div>
+            </div>
         </div>
-        
-        <!-- Şəkil sağda -->
-        <div class="col-md-6 text-center">
-          {% if random_product.image %}
-          <img src="{{ random_product.image.url }}" alt="{{ random_product.name }}" class="img-fluid animate__animated animate__fadeInRight">
-          {% endif %}
-        </div>
-  
-      </div>
-      {% endif %}
     </div>
-  </section>
-
-  
-  
 </section>
 
-
-<!-- Category Section -->
-<section class="py-5 bg-light">
-  <div class="container">
-    <h2 class="text-center mb-5 fw-bold" data-aos="zoom-in" style="color: black;">{% trans 'Category' %}</h2>
-    <div class="row g-4">
-      {% for i in categories %}
-      <div class="col-md-3 col-6" data-aos="flip-left" data-aos-delay="{{ forloop.counter0 }}00">
-        <div class="card border-0 shadow-sm h-100 hover-shadow transition">
-          <img src="{% static '/Users/fuad/Desktop/eurotechbattery/static/Power-Turf-Shop-Hero-Image-500px-Parts-_-Accessories-Batteries-Trojan-T105-Battery-6V.webp' %}" 
-               class="card-img-top rounded-top" alt="Category {{ forloop.counter }}">
-          <option value="{{ cat.slug }}" {% if request.GET.category == cat.slug %}selected{% endif %}>
+<!-- 3. CATEGORIES – overlay effect -->
+<section class="py-5" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+    <div class="container">
+        <h2 class="text-center mb-5 display-5 fw-bold" data-aos="zoom-in">{% trans "Categories" %}</h2>
+        <div class="row g-4">
+            {% for category in categories %}
+            <div class="col-lg-3 col-md-4 col-6" data-aos="flip-left" data-aos-delay="{{ forloop.counter0|add:'100' }}">
+                <a href="{% url 'products' %}?category={{ category.slug }}" class="text-decoration-none d-block">
+                    <div class="position-relative overflow-hidden rounded-4 shadow-lg hover-shadow" style="height: 240px;">
+                        {% if category.image %}
+                            <img src="{{ category.image.url }}" class="w-100 h-100" style="object-fit: cover; transition: transform 0.5s;">
+                        {% else %}
+                            <img src="{% static 'eurotechbattery/default-category.jpg' %}" class="w-100 h-100" style="object-fit: cover;">
+                        {% endif %}
+                        <div class="position-absolute inset-0 bg-dark bg-opacity-50 d-flex align-items-center justify-content-center">
+                            <h5 class="text-white fw-bold fs-4 mb-0 text-shadow">{{ category.name }}</h5>
+                        </div>
+                        <div class="position-absolute inset-0 bg-primary opacity-0 hover-opacity"></div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
         </div>
-      </div>
-      {% endfor %}
     </div>
-  </div>
 </section>
 
-
-<!-- Carousel Section -->
-<section class="py-5 bg-white position-relative overflow-hidden">
-  <div class="container text-center">
-    <div class="mb-4">
-      <h2 class="fw-bold d-inline-block position-relative" data-aos="fade-down" style="color: black;">
-        {% trans 'Latest Products' %}
-        <span class="d-block mx-auto mt-2" style="width: 50px; height: 3px; background: #007bff; border-radius: 2px;"></span>
-      </h2>
-    </div>
-
-    <!-- Product Carousel -->
-    <div id="productCarousel" class="carousel slide mx-auto shadow-lg" data-bs-ride="carousel" style="max-width: 700px; border-radius: 12px; overflow: hidden;" data-aos="zoom-in">
-      <div class="carousel-inner">
-        {% for product in latest_products %}
-        <div class="carousel-item {% if forloop.first %}active{% endif %}">
-          {% if product.image %}
-    <img src="{{ product.image.url }}" class="d-block w-100" alt="{{ product.name }}">
-{% else %}
-    <img src="{% static 'eurotechbattery/Power-Turf-Shop-Hero-Image-500px-Parts-_-Accessories-Batteries-Trojan-T105-Battery-6V.jpeg' %}" 
-         class="d-block w-100" alt="{{ product.name }}">
-{% endif %}
+<!-- 4. LATEST PRODUCTS – card style, larger -->
+<section class="py-5 bg-white">
+    <div class="container">
+        <h2 class="text-center mb-5 display-5 fw-bold" data-aos="fade-up">{% trans "Latest Products" %}</h2>
+        <div class="row g-4 justify-content-center">
+            {% for product in latest_products %}
+            <div class="col-lg-3 col-md-4 col-6" data-aos="zoom-in" data-aos-delay="{{ forloop.counter0|add:'100' }}">
+                <div class="card border-0 shadow hover-shadow h-100">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" class="card-img-top" style="height: 220px; object-fit: contain; background: #f8f9fa; padding: 15px;">
+                    {% else %}
+                        <div class="bg-light d-flex align-items-center justify-content-center" style="height: 220px;">
+                            <span class="text-muted">No image available</span>
+                        </div>
+                    {% endif %}
+                    <div class="card-body text-center">
+                        <h6 class="card-title fw-bold">{{ product.name }}</h6>
+                        <p class="text-primary small">{{ product.category.name }}</p>
+                        <a href="#" class="btn btn-outline-primary btn-sm mt-2">DETAILS →</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-      </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon bg-dark rounded-circle p-2"></span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon bg-dark rounded-circle p-2"></span>
-      </button>
     </div>
-  </div>
-
-  <!-- Sol Yük Maşını -->
-  <img src="{{ home.image_left.url }}" 
-       class="position-absolute top-50 start-0 translate-middle-y d-none d-md-block animate__animated animate__fadeInLeft" 
-       style="max-width: 780px;">
-
-  <!-- Sağ Yük Maşını -->
-  <img src="{{ home.image_right.url }}" 
-       class="position-absolute top-50 end-0 translate-middle-y d-none d-md-block animate__animated animate__fadeInRight" 
-       style="max-width: 780px; padding-right: -20px;">
 </section>
 
-
-<!-- About Section -->
-<section class="about-section py-5 bg-light">
-  <div class="container">
-    <div class="row align-items-center">
-      <div class="col-md-6" data-aos="fade-right">
-        <h2 style="color: black;">{% trans "About Our Company" %}</h2>
-        <p class="text-muted">{{ about.company_story|truncatewords:15|safe }}</p>
-        <a href="{% url 'about' %}" class="btn btn-primary btn-lg mt-3">{% trans "Learn More" %}</a>
-      </div>
-      <div class="col-md-6 text-center" data-aos="fade-left">
-      </div>
+<!-- 5. ABOUT – short and strong -->
+<section class="py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8" data-aos="fade-right">
+                <h2 class="display-5 fw-bold mb-4">About EuroTech Battery</h2>
+                <p class="lead mb-4">{{ about.company_story|truncatewords:45|safe }}</p>
+                <a href="{% url 'about' %}" class="btn btn-outline-light btn-lg px-5">Read More →</a>
+            </div>
+            <div class="col-lg-4 text-center" data-aos="fade-left">
+                {% if about.image %}
+                    <img src="{{ about.image.url }}" alt="About Us" class="img-fluid rounded shadow-lg" style="max-height: 300px;">
+                {% endif %}
+            </div>
+        </div>
     </div>
-  </div>
 </section>
 
-<!-- AOS & Animate.css -->
-<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script>
-  AOS.init();
-</script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hover-shadow {
+        transition: all 0.4s ease;
+    }
+    .hover-shadow:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.15) !important;
+    }
+    .hover-opacity {
+        transition: opacity 0.4s;
+    }
+    .hover-opacity:hover {
+        opacity: 0.3 !important;
+    }
+    .text-shadow {
+        text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+    }
+</style>
 {% endblock %}

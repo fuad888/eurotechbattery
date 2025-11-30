@@ -21,10 +21,6 @@ def products(request):
     parent_slug = request.GET.get("parent")
     category_slug = request.GET.get("category")
 
-    # DEBUG: Konsola yazdır
-    print("Parent slug:", parent_slug)
-    print("Category slug:", category_slug)
-
     # 1. ParentCategory filtri
     if parent_slug:
         # ParentCategory ilə əlaqəli məhsullar

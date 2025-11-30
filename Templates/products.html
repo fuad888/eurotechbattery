@@ -35,21 +35,19 @@
 
 <div class="container py-5">
 
-    <!-- Başlıq -->
+    <!-- Title -->
     <h1 class="section-title">
         {% if category_slug %}
-            {{ category_slug|title }} Məhsulları
-        {% elif parent_slug %}
-            {{ parent_slug|title }} Kateqoriyaları
+            {{ category_slug }} Products
         {% else %}
-            Əsas Kateqoriyalar
+            Main Categories
         {% endif %}
     </h1>
 
-    <!-- Breadcrumb (geri keçid) -->
+    <!-- Breadcrumb -->
     {% if parent_slug or category_slug %}
     <div class="breadcrumb">
-        <a href="{% url 'products' %}">Əsas səhifə</a>
+        <a href="{% url 'products' %}">Home</a>
         {% if parent_slug %}
             <span>→</span> <span>{{ parent_slug|title }}</span>
             {% if category_slug %}
@@ -59,7 +57,7 @@
     </div>
     {% endif %}
 
-    <!-- 1. ƏSAS SƏHİFƏ: ParentCategory kartları -->
+    <!-- 1. MAIN PAGE: ParentCategory cards -->
     {% if not parent_slug and not category_slug %}
         <div class="row g-4 mb-5">
             {% for parent in parent_categories %}
@@ -77,53 +75,23 @@
             </div>
             {% empty %}
             <div class="col-12 text-center">
-                <p class="text-white">Üst kateqoriya tapılmadı.</p>
+                <p class="text-white">No parent categories found.</p>
             </div>
             {% endfor %}
         </div>
 
         <div class="text-center mt-5">
             <p class="text-white" style="font-size: 1.2rem;">
-                Kateqoriyaları seçmək üçün yuxarıdakı bölmələrdən birinə klikləyin.
+                Click one of the above sections to select categories.
             </p>
         </div>
-
-    <!-- 2. PARENT SEÇİLDİ: Category kartları -->
-    {% elif parent_slug and not category_slug %}
-        <div class="row g-4 mb-5">
-            {% for cat in categories %}
-            <div class="col-lg-3 col-md-4 col-6">
-                <a href="?parent={{ parent_slug }}&category={{ cat.slug }}" class="text-decoration-none">
-                    <div class="category-card">
-                        {% if cat.image %}
-                            <img src="{{ cat.image.url }}" alt="{{ cat.name }}" class="category-img img-fluid">
-                        {% else %}
-                            <img src="{% static 'eurotechbattery/default-category.png' %}" alt="{{ cat.name }}" class="category-img img-fluid">
-                        {% endif %}
-                        <h5 class="category-title">{{ cat.name }}</h5>
-                    </div>
-                </a>
-            </div>
-            {% empty %}
-            <div class="col-12 text-center">
-                <p class="text-white">Bu üst kateqoriyada alt kateqoriya tapılmadı.</p>
-            </div>
-            {% endfor %}
-        </div>
-
-        <div class="text-center mt-5">
-            <p class="text-white" style="font-size: 1.2rem;">
-                Məhsulları görmək üçün alt kateqoriyalardan birini seçin.
-            </p>
-        </div>
-
-    <!-- 3. CATEGORY SEÇİLDİ: Məhsullar -->
+    <!-- 3. CATEGORY SELECTED: Products -->
     {% else %}
         <div class="row g-4">
             {% for product in page_obj %}
             <div class="col-lg-3 col-md-6">
                 <div class="product-card h-100 d-flex flex-column">
-                    <!-- Şəkil (xətasız) -->
+                    <!-- Image -->
                     {% if product.image %}
                         <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-img img-fluid">
                     {% else %}
@@ -131,20 +99,20 @@
                              alt="{{ product.name }}" class="product-img img-fluid">
                     {% endif %}
 
-                    <!-- Məlumat -->
+                    <!-- Info -->
                     <div class="card-body d-flex flex-column flex-grow-1">
                         <h5 class="card-title">{{ product.name }}</h5>
                         <div class="divider my-2"></div>
                         <p class="card-text flex-grow-1">{{ product.description|truncatewords:20 }}</p>
                         
-                        <!-- DÜYMƏ: Məhsul detallarına keçid -->
-                        <a href="{% url 'products_details' product.slug %}" class="btn-learn mt-auto">Daha çox</a>
+                        <!-- BUTTON: Go to product details -->
+                        <a href="{% url 'products_details' product.slug %}" class="btn-learn mt-auto">Learn More</a>
                     </div>
                 </div>
             </div>
             {% empty %}
             <div class="col-12 text-center">
-                <p class="text-white">Bu kateqoriyada məhsul tapılmadı.</p>
+                <p class="text-white">No products found in this category.</p>
             </div>
             {% endfor %}
         </div>
@@ -155,7 +123,7 @@
             <ul class="pagination justify-content-center">
                 {% if page_obj.has_previous %}
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if parent_slug %}&parent={{ parent_slug }}{% endif %}{% if category_slug %}&category={{ category_slug }}{% endif %}">Əvvəlki</a>
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if parent_slug %}&parent={{ parent_slug }}{% endif %}{% if category_slug %}&category={{ category_slug }}{% endif %}">Previous</a>
                     </li>
                 {% endif %}
                 {% for num in page_obj.paginator.page_range %}
@@ -169,16 +137,16 @@
                 {% endfor %}
                 {% if page_obj.has_next %}
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if parent_slug %}&parent={{ parent_slug }}{% endif %}{% if category_slug %}&category={{ category_slug }}{% endif %}">Sonrakı</a>
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if parent_slug %}&parent={{ parent_slug }}{% endif %}{% if category_slug %}&category={{ category_slug }}{% endif %}">Next</a>
                     </li>
                 {% endif %}
             </ul>
         </nav>
         {% endif %}
 
-        <!-- Geri keçid (məhsullar səhifəsində) -->
+        <!-- Back link (products page) -->
         <div class="text-center">
-            <a href="?parent={{ parent_slug }}" class="back-btn">Kateqoriyalara qayıt</a>
+            <a href="?parent={{ parent_slug }}" class="back-btn">Back to Categories</a>
         </div>
     {% endif %}
 

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from contact.models import contactmessage, FAQ
+from contact.models import contactmessage, FAQ, herosection
 from parler.admin import TranslatableAdmin
 
 @admin.register(contactmessage)
@@ -26,3 +26,8 @@ class FAQAdmin(TranslatableAdmin):
 
     def get_queryset(self, request):
         return super().get_queryset(request).prefetch_related('translations')
+    
+@admin.register(herosection)
+class herosectionAdmin(admin.ModelAdmin):
+    list_display = ('title', 'subtitle')
+    search_fields = ('title', 'subtitle')

@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import ContactForm
-from .models import  FAQ
+from .models import  FAQ, herosection
 
 def contact(request):
+    herosection_data = herosection.objects.first()
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
@@ -17,7 +18,8 @@ def contact(request):
 
     context = {
         'form': form,
-        'faqs': FAQ.objects.all()  # istəsən FAQ-ları da buradan göndərə bilərsən
+        'faqs': FAQ.objects.all(),  # istəsən FAQ-ları da buradan göndərə bilərsən
+        'herosection_data': herosection_data,
     }
     return render(request, 'contact.html', context)
 

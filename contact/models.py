@@ -31,4 +31,17 @@ class FAQ(TranslatableModel):
     def __str__(self):
         return self.safe_translation_getter('question', any_language=True)
 
-# Create your models here.
+class herosection(models.Model):
+    title = models.CharField(max_length=200, verbose_name=_("Title"))
+    subtitle = models.CharField(max_length=300, verbose_name=_("Subtitle"))
+    background_image = models.ImageField(upload_to='contact_hero_images/', verbose_name=_("Background Image"), null=True, blank=True)
+    hero_bg_color = models.CharField(
+        max_length=20,
+        verbose_name="Hero Section Background Color"
+    )
+    class Meta:
+        verbose_name = _("Hero Section")
+        verbose_name_plural = _("Hero Sections")
+
+    def __str__(self):
+        return self.title

@@ -9,6 +9,73 @@
 {% block content %}
 <title>{{ product.name }} - Your Reliable Power Supply</title>
 <style>
+.product-desc {
+    font-size: 18px;
+    color: #333;
+    line-height: 1.6;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* maximum 3 lines */
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%; /* prevent overflow */
+}
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 10px;
+    background: #fff;
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.excel-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+    min-width: 700px;
+}
+
+.excel-table thead tr {
+    background: #2d2d8a;
+    color: #fff;
+    text-align: left;
+    font-weight: 600;
+}
+
+.excel-table th,
+.excel-table td {
+    padding: 12px 16px;
+    border: 1px solid #ddd;
+}
+
+.excel-table tbody tr:nth-child(even) {
+    background: #f8f9ff;
+}
+
+.excel-table tbody tr:hover {
+    background: #eef1ff;
+    transition: 0.2s;
+}
+
+.pdf-link {
+    background: #e74c3c;
+    color: white;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.pdf-link:hover {
+    background: #c0392b;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -155,62 +222,119 @@ body {
 </header>
 
 <!-- Product Detail Section -->
-<section class="section">
-    <h2>Batareya Məlumatları</h2>
-    <p>{{ product.description|default:"Məhsul haqqında ətraflı məlumat admin paneldən əlavə edilə bilər."|linebreaks }}</p>
+<section class="container my-5">
 
-    <div class="product">
-        <!-- Şəkil -->
-        {% if product.image %}
-            <img src="{{ product.image.url }}" alt="{{ product.name }}">
-        {% else %}
-            <img src="{% static 'eurotechbattery/Power-Turf-Shop-Hero-Image-500px-Parts-_-Accessories-Batteries-Trojan-T105-Battery-6V.jpeg' %}" 
-                 alt="{{ product.name }}">
-        {% endif %}
+    <div class="p-5 rounded-4 shadow-lg product-banner" 
+         style="
+            background: linear-gradient(135deg, #ffe8d6, #d8e2ff, #fff2cc);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.4);
+         ">
 
-        <!-- Məlumatlar -->
-        <div class="product-info">
-            <h3>{{ product.name }}</h3>
-            
-            {% if product.price %}
-                <div class="price">₼{{ product.price }}</div>
-            {% endif %}
-        
-            <p>
-                <strong>Kod:</strong> {{ product.slug|upper }}<br>
+        <div class="row align-items-center">
+
+            <!-- Image -->
+            <div class="col-md-5 text-center mb-4 mb-md-0">
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" 
+                         class="img-fluid rounded-4 shadow"
+                         style="max-width: 340px;">
+                {% else %}
+                    <img src="{% static 'eurotechbattery/Power-Turf-Shop-Hero-Image-500px-Parts-_-Accessories-Batteries-Trojan-T105-Battery-6V.jpeg' %}" 
+                         class="img-fluid rounded-4 shadow"
+                         style="max-width: 340px;">
+                {% endif %}
+            </div>
+
+            <!-- Info -->
+            <div class="col-md-7">
+
+                <!-- Category -->
                 {% if product.category %}
-                    <strong>Kateqoriya:</strong> {{ product.category.name }}<br>
+                    <span class="badge px-3 py-2 mb-3" 
+                          style="background:#ff8a00; font-size:14px;">
+                        {{ product.category.name|upper }}
+                    </span>
                 {% endif %}
-                {% if product.parent_category %}
-                    <strong>Üst Kateqoriya:</strong> {{ product.parent_category.name }}<br>
-                {% endif %}
-                <strong>Yaradılma tarixi:</strong> {{ product.created_at|date:"d.m.Y" }}
-            </p>
-        
-            <!-- PDF DÜYMƏSİ -->
-            {% if product.pdf %}
-                <a href="{{ product.pdf.url }}" 
-                   class="btn" 
-                   style="background: #e74c3c; margin-top: 15px; display: inline-flex; align-items: center; gap: 8px;"
-                   download>
-                    PDF Yüklə
-                </a>
-            {% else %}
-                <p style="color: #ccc; font-style: italic; margin-top: 15px;">
-                    PDF faylı əlavə edilməyib.
+
+                <!-- Name -->
+                <h1 class="fw-bold mb-3" style="font-size: 38px;">
+                    {{ product.name }}
+                </h1>
+
+                <!-- Short Description -->
+                <p class="product-desc" style="line-height: 1.6;">
+                    {{ product.description|truncatewords:25 }}
                 </p>
-            {% endif %}
-        
-            <!-- Geri keçid -->
-            <a href="{% url 'products' %}" class="btn" style="margin-top: 10px;">
-                Bütün Məhsullara Qayıt
-            </a>
+
+                <!-- CTA Buttons -->
+                <div class="d-flex gap-3 mt-3">
+
+                    {% if product.pdf %}
+                        <a href="{{ product.pdf.url }}" 
+                           class="btn btn-danger px-4 py-2 rounded-3 fw-semibold"
+                           download>
+                            Download PDF
+                        </a>
+                    {% endif %}
+
+                    <a href="{% url 'products' %}" 
+                       class="btn btn-dark px-4 py-2 rounded-3 fw-semibold">
+                        View All Products
+                    </a>
+
+                </div>
+            </div>
         </div>
+
     </div>
 
-    <a href="{% url 'products' %}" class="back-link">← Bütün məhsullara qayıt</a>
 </section>
 
-{% endblock %}
 
-<!-- JavaScript (artıq lazım deyil, çünki dinamik məlumat var) -->
+<section class="section" style="margin-top: 40px;">
+    <h2 style="margin-bottom: 20px;">Specification</h2>
+
+    <div class="table-wrapper">
+        <table class="excel-table">
+            <thead>
+                <tr>
+                    <th>Model</th>
+                    <th>Volt</th>
+                    <th>Ah</th>
+                    <th>Length</th>
+                    <th>Width</th>
+                    <th>Height</th>
+                    <th>Total Height</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>
+                        {% if product.pdf %}
+                        <a href="{{ product.pdf.url }}" 
+                           target="_blank" 
+                           class="pdf-link"
+                           style="padding:4px 10px; font-size:14px;">
+                            {{ product.model_number }}
+                        </a>
+                        {% else %}
+                            {{ product.model_number }}
+                        {% endif %}
+                    </td>
+
+                    <td>{{ product.voltage }}</td>
+                    <td>{{ product.amperage }}</td>
+                    <td>{{ product.length }}</td>
+                    <td>{{ product.weight }}</td>
+                    <td>{{ product.woltage }}</td>
+                    <td>{{ product.total }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+
+{% endblock %}
